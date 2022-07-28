@@ -7,18 +7,24 @@ function App(){
   const Header = () => {
     function NavTab(props){
       return(
-        <li className='py-3 px-5 mx-5 mr-20 text-lg text-emerald-500 font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>{props.label}</li>
+        <li className='py-3 px-5 mx-5 mr-20 hidden md:block text-lg text-emerald-500 font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>{props.label}</li>
+      );
+    }
+    function MenuTab(props){
+      return(
+        <li className='py-3 px-5 mx-5 mr-20 block md:hidden text-lg text-emerald-500 font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>{props.label}</li>
       );
     }
     return (
       <nav className='w-full h-20 bg-slate-50 sticky top-0'>
           <ul className='flex justify-start items-center w-1/2 h-full float-left'>
-            <li className='py-3 px-5 ml-16 text-4xl text-emerald-500 cursor-pointer' style={{fontFamily: 'Mr Dafoe'}}>MyResume</li>
+            <li className='py-3 px-5 ml-6 md:ml-16 text-4xl text-emerald-500 cursor-pointer' style={{fontFamily: 'Mr Dafoe'}}>MyResume</li>
           </ul>
           <ul className='flex justify-end items-center w-1/2 h-full float-right'>
             <NavTab label='Trang Chủ'/>
             <NavTab label='Về tôi'/>
             <NavTab label='Liên Hệ'/>
+            <MenuTab label='Menu'/>
           </ul>
       </nav>
     );
@@ -27,9 +33,9 @@ function App(){
     const title = "Hãy tạo một lý lịch đẹp";
     const content = "MyResume là một công cụ dùng để tạo sơ yếu lý lịch một cách tự động, dựa trên bộ khung có sẵn gồm những thông tin bạn đã nhập. Với các chức năng xem trước lý lịch, xây dựng lý lịch và tải lý lịch trong vòng vài phút.";
     return(
-      <div className='h-screen w-full bg-cover bg-center relative' style={{backgroundImage: `url(/img/wallpapaper.jpg)`}}>
+      <div className='h-screen w-full bg-cover bg-center relative' style={{backgroundImage: `url(img/wallpapaper.jpg)`}}>
         <Header/>
-        <div className='flex justify-start items-center w-3/6 h-full ml-40'>
+        <div className='flex justify-start items-center w-5/6 md:w-3/6 h-full ml-10 md:ml-40'>
           <div className='grid grid-cols-1'>
             <h2 className='text-emerald-100 text-5xl'>{title}</h2>
             <p className='text-white text-xl mt-6'>{content}</p>
@@ -511,11 +517,11 @@ function App(){
     }
 
     return(
-      <div className='w-full h-fit bg-slate-50 relative' ref={refDashboard}>
+      <div className='w-full h-fit bg-slate-50 inline-block relative' ref={refDashboard}>
         <div className='container h-screen w-11/12 mx-auto relative'>
           <h2 className='text-emerald-500 text-4xl text-center mt-10'>Trình xây dựng lý lịch</h2>
           <div className='w-full h-16 mx-auto mt-7'>
-            <ul className='flex justify-start items-center w-1/2 h-full float-left'>
+            <ul className='flex justify-start items-center w-full md:w-1/2 h-full float-left'>
               <ColorSelect color="emerald"/>
               <ColorSelect color="cyan"/>
               <ColorSelect color="purple"/>
@@ -524,12 +530,12 @@ function App(){
               <ColorSelect color="pink"/>
               <ColorSelect color="gray"/>
             </ul>
-            <div className='flex justify-end items-center w-1/2 h-full float-right'>
-            <button className='w-52 px-4 py-3 text-white text-xl font-semibold rounded-lg bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 transition duration-500 ease-in-out cursor-pointer'>Tải về</button>
+            <div className='flex justify-end items-center my-3 md:my-0 w-full md:w-1/2 h-full float-right'>
+            <button className='w-full md:w-52 px-4 py-3 text-white text-xl font-semibold rounded-lg bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 transition duration-500 ease-in-out cursor-pointer'>Tải về</button>
             </div>
           </div>
           <div className='w-full h-fit mt-8'>
-            <div className='w-5/12 h-fit float-left bg-white shadow-lg shadow-gray-400 rounded-lg'>
+            <div className='w-full md:w-5/12 h-fit float-left bg-white shadow-lg shadow-gray-400 rounded-lg'>
               <div className='w-full h-full'>
                 <nav className='w-full h-fit'>
                   <ul className='grid grid-cols-3 border-b-2 border-emerald-500'>
@@ -551,8 +557,8 @@ function App(){
                 </div>
               </div>
             </div>
-            <div className='container w-7/12 float-left mb-20'>
-              <div className='w-11/12 h-fit float-right bg-white shadow-lg shadow-gray-400 rounded-lg'>
+            <div className='container w-full md:w-7/12 float-left mb-20'>
+              <div className='w-full mt-16 md:mt-0 md:w-11/12 h-fit float-right bg-white shadow-lg shadow-gray-400 rounded-lg'>
                 <PreviewResume/>
               </div>
             </div>
