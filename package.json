@@ -1,5 +1,4 @@
 {
-  "homepage": "https://holimm.github.io/MyResume/",
   "name": "myresumegen",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +11,7 @@
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-to-print": "^2.14.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

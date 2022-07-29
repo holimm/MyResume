@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom/client';
+import { useReactToPrint } from 'react-to-print';
 
 function App(){
   const refDashboard = useRef(null);
-  const scrollView = (ref) => ref.current?.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+  const scrollView = (ref) => ref.current?.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
   const Header = () => {
     function NavTab(props){
       return(
@@ -43,6 +44,25 @@ function App(){
           </div>
         </div>
       </div>
+    );
+  }
+  const Footer = () => {
+    return(
+      <>
+      <div className='w-full h-fit float-left bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 absolute'>
+        <div className='float-left w-full lg:w-1/2'>
+          <p className='text-white text-center lg:text-left text-lg ml-0 lg:ml-20 px-5 py-6'>&#169; 2022 MyResume, Designed and Deployed by Nguyễn Lim Thái Hồ</p>
+        </div>
+        <div className='float-left lg:float-right w-full lg:w-1/2'>
+          <div className='w-fit h-fit mx-auto'>
+          <p className='text-white text-center lg:text-right text-lg px-5 py-6'>
+            <a className=' hover:bg-white hover:text-emerald-500 mx-10 py-2 px-2 transition duration-500 ease-in-out rounded-lg' href='https://github.com/holimm'>Github</a>
+            <a className=' hover:bg-white hover:text-emerald-500 mx-10 py-2 px-2 transition duration-500 ease-in-out rounded-lg' href='https://www.instagram.com/millohh_/'>Instagram</a>
+          </p>     
+          </div>             
+        </div>
+      </div>
+      </>
     );
   }
   const Dashboard = () => {
@@ -85,12 +105,14 @@ function App(){
       );
     }
     function AboutTab(){
+      const [image, setImage] = useState();
       const [fullname,setFullName] = useState('John Doe');
       const [role,setRole] = useState('Full Stack Web Developer');
       const [phone,setPhone] = useState('+84932528310');
       const [email,setEmail] = useState('johndoe@gmail.com');
       const [address,setAddress] = useState('Ho Chi Minh City, Vietnam');
 
+      const handleImageChange = (e) => setImage(URL.createObjectURL(e.target.files[0]));
       const handleFullnameChange = (e) => setFullName(e.target.value);
       const handleRoleChange = (e) => setRole(e.target.value);
       const handlePhoneChange = (e) => setPhone(e.target.value);
@@ -102,13 +124,19 @@ function App(){
           role: role,
           phone: phone,
           email: email,
-          address: address
+          address: address,
+          image: image
         }
         setAbout(object);
       }
       return(
         <>
-        <button className='w-full h-full text-emerald-500 font-semibold py-2 border-2 border-emerald-500 hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 rounded-lg'>Upload Image</button>
+        {image ? <div className='w-36 h-36 bg-cover bg-center mx-auto my-5 rounded-full' style={{backgroundImage: `url('${image}')`}}></div> : <p></p>}       
+        <div className='w-full h-fit inline-block'>
+        <div className='w-fit h-full mx-auto mt-3'>
+          <input type={'file'} onChange={handleImageChange} id='fileimage' className='hidden mx-auto w-fit h-full'></input>
+          <label className='w-full h-full text-center text-emerald-500 font-semibold px-10 py-2 border-2 border-emerald-500 hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 rounded-lg cursor-pointer' for='fileimage'>Tải hình ảnh xem trước</label>
+        </div>
         <div className='grid grid-cols-2 mt-2 mb-8'>
           <div className='w-11/12 h-full mt-4'>
             <label className='text-emerald-500 text-lg font-semibold text-center mt-10'>Họ và tên:</label>
@@ -132,6 +160,7 @@ function App(){
           </div>
         </div>
         <button onClick={pushAboutMe} className='w-52 px-4 py-3 mb-8 border-2 border-emerald-500 bg-white text-emerald-500 text-xl font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>Cập nhật</button>
+        </div>
         </>
       );
     }
@@ -244,7 +273,7 @@ function App(){
           {skillsListState.length!==0 ? skillsListState.map(items => {
             return(
               <>
-              <span className='px-3 py-2 mt-5 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left cursor-pointer'>{items} <span onClick={()=>removeSkill(items)} className='hover:text-red-500'>&#10005;</span></span>
+              <span className='px-3 py-2 mt-5 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left cursor-pointer break-all'>{items} <span onClick={()=>removeSkill(items)} className='hover:text-red-500'>&#10005;</span></span>
               </>
             );         
           }):<p></p>}
@@ -281,8 +310,7 @@ function App(){
             </div>
           </div>
           <div className='grid grid-cols-2 w-full mt-6'>
-            {edulistState.length<2 ? <button onClick={pushProfile} className='w-52 px-4 py-3 mb-8 border-2 border-emerald-500 float-left bg-white text-emerald-500 text-xl font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>Cập nhật</button>
-            : <p></p>}
+            <button onClick={pushProfile} className='w-52 px-4 py-3 mb-8 border-2 border-emerald-500 float-left bg-white text-emerald-500 text-xl font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>Cập nhật</button>
           </div>
           </form>
           </>
@@ -365,16 +393,16 @@ function App(){
               <textarea onChange={handleDescriptionChange} className='px-3 py-3 mt-2 bg-slate-100 hover:bg-slate-200 rounded-lg w-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transitionn duration-300 ease-in-out' placeholder='Nhập chú thích'></textarea>
             </div>
           </div>
-          <div className='h-fit w-full mb-2 inline-block'>
+          <div className='h-fit w-full inline-block'>
           {worklistState.length!==0 ? worklistState.map(items => {
             return(
               <>
-              <span className='px-3 py-2 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left cursor-pointer'>{items.company} <span onClick={()=>removeWork(items.company)} className='hover:text-red-500'>&#10005;</span></span>
+              <span className='px-3 mt-2 py-2 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left break-all cursor-pointer'>{items.company} <span onClick={()=>removeWork(items.company)} className='hover:text-red-500'>&#10005;</span></span>
               </>
             );         
           }):<p></p>}
           </div>
-          <div className='grid grid-cols-2 mt-2'>
+          <div className='grid grid-cols-2 mt-4'>
             {worklistState.length<5 ? <button onClick={pushEducationList} className='w-52 px-4 py-3 mb-8 border-2 border-emerald-500 float-left bg-white text-emerald-500 text-xl font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>Thêm</button>
             : <p></p>}
           </div>
@@ -430,16 +458,16 @@ function App(){
               <textarea onChange={handleDescriptionChange} className='px-3 py-3 mt-2 bg-slate-100 hover:bg-slate-200 rounded-lg w-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transitionn duration-300 ease-in-out' placeholder='Nhập chú thích'></textarea>
             </div>
           </div>
-          <div className='h-fit w-full mb-2 inline-block'>
+          <div className='h-fit w-full inline-block'>
           {projectlistState.length!==0 ? projectlistState.map(items => {
             return(
               <>
-              <span className='px-3 py-2 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left cursor-pointer'>{items.projectName} <span onClick={()=>removeWork(items.projectName)} className='hover:text-red-500'>&#10005;</span></span>
+              <span className='px-3 py-2 mt-2 w-fit border mx-2 hover:bg-emerald-300 hover:bg-opacity-50 transition duration-300 ease-in-out border-emerald-400 rounded-lg float-left break-all cursor-pointer'>{items.projectName} <span onClick={()=>removeWork(items.projectName)} className='hover:text-red-500'>&#10005;</span></span>
               </>
             );         
           }):<p></p>}
           </div>
-          <div className='grid grid-cols-2 mt-2'>
+          <div className='grid grid-cols-2 mt-4'>
             {projectlistState.length<4 ? <button onClick={pushEducationList} className='w-52 px-4 py-3 mb-8 border-2 border-emerald-500 float-left bg-white text-emerald-500 text-xl font-semibold rounded-lg hover:bg-gradient-to-r hover:from-teal-500 hover:via-emerald-500 hover:to-green-500 hover:text-white transition duration-500 ease-in-out cursor-pointer'>Thêm</button>
             : <p></p>}
           </div>
@@ -451,62 +479,63 @@ function App(){
     function PreviewResume(){   
       return(
         <div className='w-full h-fit mx-auto' ref={refPreview}>
-          <div className='w-full h-full'>
-            <div className={`w-4/12 h-full float-left bg-${colorstate}-400 pb-20`}>              
-                <div className='w-full h-fit'>
-                  <div className='w-32 h-32 bg-white mx-auto mt-5 rounded-full'></div>
-                  <h2 className='text-4xl font-bold mt-2 text-center'>{aboutState.fullname}</h2>
-                  <p className='text-md font-semibold mt-2 text-center'>{aboutState.role}</p>
+          <div className={`w-full h-full inline-block`}>
+            <div className={`w-4/12 h-fit float-left bg-${colorstate}-400 pb-16 rounded-br-lg`}>              
+                <div className='w-full h-fit'>{
+                  aboutState.image ? <div className='w-48 h-48 bg-cover bg-center mx-auto mt-5 rounded-full' style={{backgroundImage: `url('${aboutState.image}')`}}></div> : <p></p>
+                  }               
+                  <h2 className='text-4xl font-bold mt-5 text-center break-all'>{aboutState.fullname}</h2>
+                  <p className='text-md font-semibold mt-2 text-center break-all'>{aboutState.role}</p>
                 </div>
-                <div className='ml-5'>
+                <div className='ml-8 mr-5'>
                   <h2 className='text-xl font-bold mt-5'>LIÊN HỆ</h2>
-                    <p className='mt-1'>{aboutState.phone}</p>
-                    <p className='mt-1'>{aboutState.email}</p>
-                    <p className='mt-1'>{aboutState.address}</p>
+                    <p className='mt-1 break-all'>{aboutState.phone}</p>
+                    <p className='mt-1 break-all'>{aboutState.email}</p>
+                    <p className='mt-1 break-all'>{aboutState.address}</p>
                   <h2 className='text-xl font-bold mt-7'>HỌC VẤN</h2>
                     {edulistState.length!==0 ? edulistState.map(items => {
                       return(
                         <>
-                        <p className='text-lg mt-2'>{items.major}</p>
+                        <p className='text-lg mt-2 break-all'>{items.major}</p>
                         <p>{items.school}</p>
-                        <p className='text-start'>{items.datefrom}-{items.dateto}</p>
+                        <p className='text-start break-all'>{items.datefrom}-{items.dateto}</p>
                         </>
                       );         
-                    }):<p></p>}
+                    }):<p>Thêm học vấn</p>}
                     {/* <p className='mt-1' ref={refEducation}></p> */}
                   <h2 className='text-xl font-bold mt-7'>KỸ NĂNG</h2>
                   <ul className='mt-2'>               
                     {skillsListState.length!==0 ? skillsListState.map(items => {
                       return(
                         <>
-                        <li>{items}</li>
+                        <li className='break-all'>{items}</li>
                         </>
                       );         
                     }):<p>Thêm kỹ năng</p>}
                   </ul>
                 </div>
             </div>
-            <div className='w-7/12 ml-7 h-fit float-left'>
+            <div className='w-8/12 h-fit px-10 mt-6 float-right bg-white pb-12'>
               <p className='text-xl font-bold mt-5'>HỒ SƠ</p>
-              <p>{profileState.length !== 0 ? profileState : 'Thêm giới thiệu bản thân'}</p>
+              <p className='break-all'>{profileState.length !== 0 ? profileState : 'Thêm giới thiệu bản thân'}</p>
               <p className='text-xl font-bold mt-7 mb-1'>KINH NGHIỆM LÀM VIỆC</p>
                 {worklistState.length!==0 ? worklistState.map(items => {
                   return(
                     <>
-                    <p className='text-lg mt-2 font-semibold'>{items.position}</p>
-                    <p className='text-sm'>{items.company} - {items.employmentType}</p>
-                    <p className='text-sm text-start'><i>{items.datefrom} - {items.dateto}</i></p>
-                    <p className='text-sm'>{items.description}</p>
+                    <p className='text-lg mt-2 font-semibold break-all'>{items.position}</p>
+                    <p className='text-sm break-all'>{items.company} - {items.employmentType}</p>
+                    <p className='text-sm text-start break-all'><i>{items.datefrom} - {items.dateto}</i></p>
+                    <p className='text-sm break-all'>{items.description}</p>
                     </>
                   );         
-                }):<p>Thêm kinh nghiệm làm việc</p>}               
+                }):<p>Thêm kinh nghiệm làm việc</p>}          
               <p className='text-xl font-bold mt-7'>DỰ ÁN</p>
               {projectlistState.length!==0 ? projectlistState.map(items => {
                   return(
                     <>
-                    <p className='text-lg mt-2 font-semibold'>{items.projectName}</p>
-                    <p className='text-sm'>{items.projectURL}</p>
-                    <p className='text-sm'>{items.description}</p>
+                    <p className='text-lg mt-2 font-semibold break-all'>{items.projectName}</p>
+                    <p className='text-sm break-all'>{items.projectURL}</p>
+                    <p className='text-sm break-all'>{items.description}</p>
                     </>
                   );         
                 }):<p>Thêm dự án đã làm</p>}
@@ -515,9 +544,12 @@ function App(){
         </div>
       );
     }
-
+    const printResume = useReactToPrint({
+      content: () => refPreview.current,
+      copyStyles: true
+    });
     return(
-      <div className='w-full h-fit bg-slate-50 inline-block relative' ref={refDashboard}>
+      <div className='w-full h-fit bg-slate-50 inline-block relative pb-20' ref={refDashboard}>
         <div className='container h-screen w-11/12 mx-auto relative'>
           <h2 className='text-emerald-500 text-4xl text-center mt-10'>Trình xây dựng lý lịch</h2>
           <div className='w-full h-16 mx-auto mt-7'>
@@ -531,7 +563,7 @@ function App(){
               <ColorSelect color="gray"/>
             </ul>
             <div className='flex justify-end items-center my-3 md:my-0 w-full md:w-1/2 h-full float-right'>
-            <button className='w-full md:w-52 px-4 py-3 text-white text-xl font-semibold rounded-lg bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 transition duration-500 ease-in-out cursor-pointer'>Tải về</button>
+            <button onClick={printResume} className='w-full md:w-52 px-4 py-3 text-white text-xl font-semibold rounded-lg bg-gradient-to-r from-teal-500 via-emerald-500 to-green-500 transition duration-500 ease-in-out cursor-pointer'>Tải về</button>
             </div>
           </div>
           <div className='w-full h-fit mt-8'>
@@ -571,6 +603,7 @@ function App(){
   <>
   <Wallpaper/>
   <Dashboard/>
+  <Footer/>
   </>
   );
 }
