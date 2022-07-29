@@ -22,10 +22,10 @@ function App(){
             <li className='py-3 px-5 ml-6 md:ml-16 text-4xl text-emerald-500 cursor-pointer' style={{fontFamily: 'Mr Dafoe'}}>MyResume</li>
           </ul>
           <ul className='flex justify-end items-center w-1/2 h-full float-right'>
-            <NavTab label='Trang Chủ'/>
-            <NavTab label='Về tôi'/>
-            <NavTab label='Liên Hệ'/>
-            <MenuTab label='Menu'/>
+            <NavTab label='TRANG CHỦ'/>
+            <NavTab label='VỀ TÔI'/>
+            <NavTab label='LIÊN HỆ'/>
+            <MenuTab label='MENU'/>
           </ul>
       </nav>
     );
